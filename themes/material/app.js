@@ -28,7 +28,7 @@ function render(path){
     if(path.substr(-1) == '/'){
     	list(path);
     }else{
-	file(path);
+		file(path);
     }
 }
 
@@ -99,9 +99,11 @@ function list(path){
     $('#readme_md').hide().html('');
 	$('#head_md').hide().html('');
 	
+	console.log(listCache);
 	//判断是否有缓存
 	if(listCache.has(path)){
-		$('#list').html(listCache.get(path));
+		let files = listCache.get(path);
+		list_files(path,files);
 		return ;
 	}
 
@@ -118,13 +120,13 @@ function list(path){
                 history.go(-1);
             }
         }else if(typeof obj != 'null'){
-			var html = list_files(path,obj.files);
-			$('#list').html(html);
-			listCache.set(path,html);
+			listCache.set(path,obj.files);
+			list_files(path,obj.files);
         }
     });
 }
 
+//渲染文件列表
 function list_files(path,files){
     html = "";
     for(i in files){
@@ -150,7 +152,7 @@ function list_files(path,files){
             var p = path+item.name;
             var c = "file";
             if(item.name == "README.md"){
-                 get_file(p, item, function(data){
+                get_file(p, item, function(data){
                     markdown("#readme_md",data);
                 });
             }
@@ -175,9 +177,9 @@ function list_files(path,files){
 	      </li>`;
         }
 	}
-	return html;
     $('#list').html(html);
 }
+
 
 
 function get_file(path, file, callback){
