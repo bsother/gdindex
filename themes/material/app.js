@@ -108,7 +108,7 @@ function list(path){
 	$('#head_md').hide().html('');
 	
 	//判断是否有缓存
-	if(localStorage.has(path)){
+	if(localStorage.getItem(path)){
 		let files = JSON.parse(localStorage.get(path));
 		list_files(path,files);
 		return ;
