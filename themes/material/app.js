@@ -96,7 +96,7 @@ function list(path){
 	  </ul> 
 	 </div>
 	 <div id="readme_md" class="mdui-typo" style="display:none; padding: 20px 0;"></div>
-	<a href="refresh('${path}');" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent">
+	<a href="#" onclick="refresh('${path}');" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent">
 		<i class="mdui-icon material-icons">refresh</i>
 	</a>
 	`;
