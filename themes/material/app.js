@@ -59,6 +59,14 @@ function nav(path){
     $('#nav').html(html);
 }
 
+
+
+function refresh(path){
+	localStorage.removeItem(path);
+	list(path);
+}
+
+// 客户端级别缓存
 var listCache = new Map();
 // 渲染文件列表
 function list(path){
@@ -88,7 +96,7 @@ function list(path){
 	  </ul> 
 	 </div>
 	 <div id="readme_md" class="mdui-typo" style="display:none; padding: 20px 0;"></div>
-	<a href="javascript:location.reload();" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent">
+	<a href="refresh('${path}');" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent">
 		<i class="mdui-icon material-icons">refresh</i>
 	</a>
 	`;
@@ -100,8 +108,8 @@ function list(path){
 	$('#head_md').hide().html('');
 	
 	//判断是否有缓存
-	if(listCache.has(path)){
-		let files = JSON.parse(listCache.get(path));
+	if(localStorage.has(path)){
+		let files = JSON.parse(localStorage.get(path));
 		list_files(path,files);
 		return ;
 	}
@@ -119,7 +127,7 @@ function list(path){
                 history.go(-1);
             }
         }else if(typeof obj != 'null'){
-			listCache.set(path,JSON.stringify(obj.files));
+			localStorage.set(path,JSON.stringify(obj.files));
 			list_files(path,obj.files);
         }
     });
