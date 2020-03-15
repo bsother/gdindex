@@ -101,7 +101,8 @@ function list(path){
 	
 	//判断是否有缓存
 	if(listCache.has(path)){
-		return listCache.get(path);
+		$('#list').html(listCache.get(path));
+		return ;
 	}
 
     $.post(path,'{"password":"'+password+'"}', function(data,status){
