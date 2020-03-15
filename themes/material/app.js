@@ -99,10 +99,9 @@ function list(path){
     $('#readme_md').hide().html('');
 	$('#head_md').hide().html('');
 	
-	console.log(listCache);
 	//判断是否有缓存
 	if(listCache.has(path)){
-		let files = listCache.get(path);
+		let files = JSON.parse(listCache.get(path));
 		list_files(path,files);
 		return ;
 	}
@@ -120,7 +119,7 @@ function list(path){
                 history.go(-1);
             }
         }else if(typeof obj != 'null'){
-			listCache.set(path,obj.files);
+			listCache.set(path,JSON.stringify(obj.files));
 			list_files(path,obj.files);
         }
     });
@@ -154,12 +153,12 @@ function list_files(path,files){
             if(item.name == "README.md"){
                 get_file(p, item, function(data){
                     markdown("#readme_md",data);
-                });
+				});
             }
             if(item.name == "HEAD.md"){
 	            get_file(p, item, function(data){
                     markdown("#head_md",data);
-                });
+				});
             }
             var ext = p.split('.').pop();
             if("|html|php|css|go|java|js|json|txt|sh|md|mp4|webm|avi|bmp|jpg|jpeg|png|gif|m4a|mp3|wav|ogg|mpg|mpeg|mkv|rm|rmvb|mov|wmv|asf|ts|flv|".indexOf(`|${ext}|`) >= 0){
