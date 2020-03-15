@@ -109,7 +109,7 @@ function list(path){
 	
 	//判断是否有缓存
 	if(localStorage.getItem(path)){
-		let files = JSON.parse(localStorage.get(path));
+		let files = JSON.parse(localStorage.getItem(path));
 		list_files(path,files);
 		return ;
 	}
@@ -127,7 +127,7 @@ function list(path){
                 history.go(-1);
             }
         }else if(typeof obj != 'null'){
-			localStorage.set(path,JSON.stringify(obj.files));
+			localStorage.setItem(path,JSON.stringify(obj.files));
 			list_files(path,obj.files);
         }
     });
