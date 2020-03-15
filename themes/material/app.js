@@ -62,7 +62,7 @@ function nav(path){
 
 
 function refresh(path){
-	localStorage.removeItem(path);
+	sessionStorage.removeItem(path);
 	list(path);
 }
 
@@ -108,8 +108,8 @@ function list(path){
 	$('#head_md').hide().html('');
 	
 	//判断是否有缓存
-	if(localStorage.getItem(path)){
-		let files = JSON.parse(localStorage.getItem(path));
+	if(sessionStorage.getItem(path)){
+		let files = JSON.parse(sessionStorage.getItem(path));
 		list_files(path,files);
 		return ;
 	}
@@ -127,7 +127,7 @@ function list(path){
                 history.go(-1);
             }
         }else if(typeof obj != 'null'){
-			localStorage.setItem(path,JSON.stringify(obj.files));
+			sessionStorage.setItem(path,JSON.stringify(obj.files));
 			list_files(path,obj.files);
         }
     });
