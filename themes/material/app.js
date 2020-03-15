@@ -28,7 +28,7 @@ function render(path){
     if(path.substr(-1) == '/'){
     	list(path);
     }else{
-	    file(path);
+	file(path);
     }
 }
 
@@ -87,6 +87,9 @@ function list(path){
 	  </ul> 
 	 </div>
 	 <div id="readme_md" class="mdui-typo" style="display:none; padding: 20px 0;"></div>
+	<a  class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent">
+		<i class="mdui-icon material-icons">refresh</i>
+	</a>
 	`;
 	$('#content').html(content);
 	
@@ -229,7 +232,9 @@ function file_code(path){
 	<label class="mdui-textfield-label">下载地址</label>
 	<input class="mdui-textfield-input" type="text" value="${href}"/>
 </div>
-<a href="${href}" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent"><i class="mdui-icon material-icons">file_download</i></a>
+<a href="${href}" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent">
+	<i class="mdui-icon material-icons">file_download</i>
+</a>
 
 <script src="https://cdn.staticfile.org/ace/1.4.7/ace.js"></script>
 <script src="https://cdn.staticfile.org/ace/1.4.7/ext-language_tools.js"></script>
