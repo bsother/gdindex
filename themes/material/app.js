@@ -99,9 +99,11 @@ function list(path){
     $('#readme_md').hide().html('');
 	$('#head_md').hide().html('');
 	
+	//判断是否有缓存
 	if(listCache.has(path)){
 		return listCache.get(path);
 	}
+
     $.post(path,'{"password":"'+password+'"}', function(data,status){
 		var obj = jQuery.parseJSON(data);
 		
