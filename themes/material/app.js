@@ -59,6 +59,7 @@ function nav(path){
     $('#nav').html(html);
 }
 
+var listCache = new Map();
 // 渲染文件列表
 function list(path){
 	var content = `
@@ -96,9 +97,15 @@ function list(path){
     var password = localStorage.getItem('password'+path);
     $('#list').html(`<div class="mdui-progress"><div class="mdui-progress-indeterminate"></div></div>`);
     $('#readme_md').hide().html('');
-    $('#head_md').hide().html('');
+	$('#head_md').hide().html('');
+	
+	if(listCache.has(path)){
+		return listCache.get(path);
+	}
     $.post(path,'{"password":"'+password+'"}', function(data,status){
-        var obj = jQuery.parseJSON(data);
+		var obj = jQuery.parseJSON(data);
+		
+		//需要密码
         if(typeof obj != 'null' && obj.hasOwnProperty('error') && obj.error.code == '401'){
             var pass = prompt("目录加密, 请输入密码","");
             localStorage.setItem('password'+path, pass);
@@ -108,7 +115,9 @@ function list(path){
                 history.go(-1);
             }
         }else if(typeof obj != 'null'){
-            list_files(path,obj.files);
+			var html = list_files(path,obj.files);
+			$('#list').html(html);
+			listCache.set(path,html);
         }
     });
 }
@@ -162,7 +171,8 @@ function list_files(path,files){
 	          </a>
 	      </li>`;
         }
-    }
+	}
+	return html;
     $('#list').html(html);
 }
 
