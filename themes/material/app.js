@@ -60,6 +60,21 @@ function nav(path){
 }
 
 
+function upload(path){
+	var file = document.getElementById("upload").files[0];
+	console.log(path,file);
+	var formdata = new FormData();
+    formdata.append("file",file);
+	$.ajax({
+		type: "put",
+		url: path,
+		// Ajax上传文件必备参数
+		processData: false ,    // 不处理数据
+		contentType: false,    // 不设置内容类型
+		
+		data: formdata
+	});
+}
 
 function refresh(path){
 	sessionStorage.removeItem(path);
@@ -96,7 +111,16 @@ function list(path){
 	  </ul> 
 	 </div>
 	 <div id="readme_md" class="mdui-typo" style="display:none; padding: 20px 0;"></div>
-	<a href="#" onclick="refresh('${path}');" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent">
+	 <a style="margin-bottom: 80px;" href="javascript:;" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent">
+		<input style="    position: absolute;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		z-index: 2;
+		cursor: pointer;" type="file" id="upload" onchange="upload('${path}')"/><i class="mdui-icon material-icons">file_upload</i>
+	</a>
+	<a href="javascript:;" onclick="refresh('${path}');" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent">
 		<i class="mdui-icon material-icons">refresh</i>
 	</a>
 	`;
@@ -173,7 +197,7 @@ function list_files(path,files){
 	            p += "?a=view";
 	            c += " view";
             }
-            html += `<li class="mdui-list-item file mdui-ripple" target="_blank"><a gd-type="${item.mimeType}" href="${p}" class="${c}">
+            html += `<li class="mdui-list-item file mdui-ripple" target="_blank"><a gd-type="${item.mimeType}" href="${p}" class="${c}" md5Checksum="${item['md5Checksum']}">
 	          <div class="mdui-col-xs-12 mdui-col-sm-7 mdui-text-truncate">
 	          <i class="mdui-icon material-icons">insert_drive_file</i>
 	            ${item.name}
@@ -190,7 +214,7 @@ function list_files(path,files){
 
 
 function get_file(path, file, callback){
-	var key = "file_path_"+path+file['modifiedTime'];
+	var key = "file_path_" + path + file['md5Checksum'];
 	var data = localStorage.getItem(key);
 	if(data != undefined){
 		return callback(data);
@@ -262,6 +286,7 @@ function file_code(path){
 <script src="https://cdn.staticfile.org/ace/1.4.7/ext-language_tools.js"></script>
 	`;
 	$('#content').html(content);
+	
 	
 	$.get(path, function(data){
 		$('#editor').html($('<div/>').text(data).html());
@@ -448,7 +473,8 @@ $(function(){
     });
 
     $("body").on("click",'.view',function(){
-        var url = $(this).attr('href');
+		var url = $(this).attr('href');
+		var md5Checksum = $(this).attr('md5Checksum');
         history.pushState(null, null, url);
         render(url);
         return false;
